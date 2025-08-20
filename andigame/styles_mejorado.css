@@ -1,0 +1,534 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+    color: white;
+    overflow: hidden;
+    user-select: none;
+}
+
+#gameContainer {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(22, 33, 62, 0.95));
+    backdrop-filter: blur(10px);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Pantalla de inicio mejorada */
+.title {
+    text-align: center;
+    margin-bottom: 50px;
+    animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+    from {
+        text-shadow: 0 0 20px #ff6b35, 0 0 30px #ff6b35, 0 0 40px #ff6b35;
+    }
+    to {
+        text-shadow: 0 0 30px #ff8c42, 0 0 40px #ff8c42, 0 0 50px #ff8c42;
+    }
+}
+
+.title h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    background: linear-gradient(45deg, #ff6b35, #f7931e, #ffd23f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.title p {
+    font-size: 1.3rem;
+    opacity: 0.9;
+    color: #a8dadc;
+    font-weight: 300;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 18px 40px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 250px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #ff6b35, #f7931e);
+    color: white;
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #ff8c42, #ffa726);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(255, 107, 53, 0.6);
+}
+
+.btn-secondary {
+    background: linear-gradient(45deg, #457b9d, #1d3557);
+    color: white;
+    box-shadow: 0 8px 25px rgba(69, 123, 157, 0.4);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(45deg, #5a9bd4, #2e5984);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(69, 123, 157, 0.6);
+}
+
+.btn-primary::before, .btn-secondary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-primary:hover::before, .btn-secondary:hover::before {
+    left: 100%;
+}
+
+/* Pantalla de instrucciones mejorada */
+.instructions {
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(22, 33, 62, 0.95));
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 700px;
+    text-align: left;
+    border: 2px solid rgba(255, 107, 53, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(15px);
+}
+
+.instructions h2 {
+    margin-bottom: 25px;
+    text-align: center;
+    color: #ff6b35;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.instructions ul {
+    list-style: none;
+    margin-bottom: 30px;
+}
+
+.instructions li {
+    margin-bottom: 15px;
+    padding: 15px;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(247, 147, 30, 0.1));
+    border-radius: 10px;
+    border-left: 4px solid #ff6b35;
+    transition: all 0.3s ease;
+}
+
+.instructions li:hover {
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.2), rgba(247, 147, 30, 0.2));
+    transform: translateX(5px);
+}
+
+/* Pantalla del juego mejorada */
+#gameScreen {
+    background: none;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+#gameCanvas {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, #87CEEB 0%, #98FB98 40%, #8B4513 100%);
+    cursor: crosshair;
+    border-radius: 0;
+}
+
+/* HUD mejorado estilo Free Fire */
+#gameHUD {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.hud-top {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.health-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(26, 26, 46, 0.8));
+    padding: 12px 18px;
+    border-radius: 25px;
+    border: 2px solid rgba(255, 107, 53, 0.5);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+}
+
+.health-bar span {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.bar {
+    width: 180px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff4757, #ffa502, #2ed573);
+    width: 100%;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px rgba(46, 213, 115, 0.5);
+}
+
+.players-alive {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(26, 26, 46, 0.8));
+    padding: 12px 18px;
+    border-radius: 25px;
+    border: 2px solid rgba(69, 123, 157, 0.5);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.minimap {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(26, 26, 46, 0.8));
+    border-radius: 15px;
+    border: 2px solid rgba(255, 107, 53, 0.5);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    pointer-events: none;
+}
+
+.hud-bottom {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    right: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.inventory {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(26, 26, 46, 0.8));
+    padding: 15px 20px;
+    border-radius: 20px;
+    display: flex;
+    gap: 25px;
+    border: 2px solid rgba(255, 107, 53, 0.5);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+}
+
+.weapon-slot, .items {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.weapon-slot span:first-child, .items span:first-child {
+    color: #ff6b35;
+}
+
+.ammo-counter {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(26, 26, 46, 0.8));
+    padding: 15px 20px;
+    border-radius: 20px;
+    border: 2px solid rgba(69, 123, 157, 0.5);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-align: center;
+    min-width: 100px;
+}
+
+.zone-warning {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, rgba(255, 71, 87, 0.95), rgba(255, 107, 53, 0.95));
+    padding: 25px 35px;
+    border-radius: 15px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 15px 40px rgba(255, 71, 87, 0.4);
+    animation: warningPulse 1s infinite;
+}
+
+@keyframes warningPulse {
+    0%, 100% { 
+        opacity: 1; 
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% { 
+        opacity: 0.8; 
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+}
+
+/* Controles móviles mejorados */
+.mobile-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 220px;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.joystick-container {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    pointer-events: all;
+}
+
+.joystick {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+    border: 3px solid rgba(255, 107, 53, 0.6);
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.joystick-knob {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.1s ease;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+}
+
+.action-buttons {
+    position: absolute;
+    bottom: 25px;
+    right: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    pointer-events: all;
+}
+
+.action-btn {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(26, 26, 46, 0.8));
+    border: 3px solid rgba(255, 107, 53, 0.6);
+    border-radius: 50%;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn:hover, .action-btn:active {
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.3), rgba(247, 147, 30, 0.3));
+    transform: scale(1.1);
+    box-shadow: 0 12px 35px rgba(255, 107, 53, 0.4);
+}
+
+/* Pantalla de fin de juego mejorada */
+.game-over {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(22, 33, 62, 0.95));
+    padding: 50px;
+    border-radius: 25px;
+    max-width: 600px;
+    border: 3px solid rgba(255, 107, 53, 0.5);
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(15px);
+}
+
+.game-over h2 {
+    font-size: 3rem;
+    margin-bottom: 25px;
+    background: linear-gradient(45deg, #ff6b35, #f7931e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 900;
+}
+
+.stats {
+    margin: 35px 0;
+    padding: 25px;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(247, 147, 30, 0.1));
+    border-radius: 15px;
+    border: 2px solid rgba(255, 107, 53, 0.3);
+}
+
+.stats p {
+    margin-bottom: 12px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.stats span {
+    color: #ff6b35;
+    font-weight: 700;
+}
+
+/* Efectos de partículas y animaciones */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Responsive mejorado */
+@media (max-width: 768px) {
+    .title h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hud-top {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .inventory {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .mobile-controls {
+        display: block;
+    }
+    
+    .minimap {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-controls {
+        display: none;
+    }
+}
+
+/* Efectos de hover y transiciones suaves */
+.hud-element {
+    transition: all 0.3s ease;
+}
+
+.hud-element:hover {
+    transform: scale(1.02);
+}
+
+/* Gradientes animados para fondos */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.animated-bg {
+    background: linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #1a1a2e);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+}
+
+/* Efectos de brillo para elementos importantes */
+.glow-effect {
+    box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 20px rgba(255, 107, 53, 0.5); }
+    to { box-shadow: 0 0 30px rgba(255, 107, 53, 0.8); }
+}
+
