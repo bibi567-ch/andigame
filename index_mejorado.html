@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battle Royale Bolivia </title>
+    <link rel="stylesheet" href="styles_mejorado.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="animated-bg">
+    <div id="gameContainer">
+        <div id="startScreen" class="screen">
+            <div class="title floating">
+                <h1>🌄 BATTLE ROYALE BOLIVIA</h1>
+                <p>Sobrevive en las tierras rurales de Bolivia</p>
+                <div style="margin-top: 20px; font-size: 0.9rem; opacity: 0.7;">
+                    Gráficos Mejorados
+                </div>
+            </div>
+            <div class="menu">
+                <button id="startBtn" class="btn-primary glow-effect">
+                    🎮 INICIAR BATALLA
+                </button>
+                <button id="instructionsBtn" class="btn-secondary">
+                    📋 INSTRUCCIONES
+                </button>
+                <button id="settingsBtn" class="btn-secondary">
+                    ⚙️ CONFIGURACIÓN
+                </button>
+            </div>
+        </div>
+
+      
+        <div id="settingsScreen" class="screen hidden">
+            <div class="instructions">
+                <h2>⚙️ Configuración</h2>
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <label>🔊 Volumen de Efectos:</label>
+                        <input type="range" id="sfxVolume" min="0" max="100" value="70">
+                        <span id="sfxVolumeValue">70%</span>
+                    </div>
+                    <div class="setting-item">
+                        <label>🎵 Volumen de Música:</label>
+                        <input type="range" id="musicVolume" min="0" max="100" value="50">
+                        <span id="musicVolumeValue">50%</span>
+                    </div>
+                    <div class="setting-item">
+                        <label>🎨 Calidad Gráfica:</label>
+                        <select id="graphicsQuality">
+                            <option value="low">Baja</option>
+                            <option value="medium" selected>Media</option>
+                            <option value="high">Alta</option>
+                            <option value="ultra">Ultra</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label>📱 Controles Móviles:</label>
+                        <input type="checkbox" id="mobileControls" checked>
+                        <span>Activar en dispositivos táctiles</span>
+                    </div>
+                </div>
+                <button id="backFromSettingsBtn" class="btn-secondary">Volver</button>
+            </div>
+        </div>
+
+        <!-- Pantalla de instrucciones mejorada -->
+        <div id="instructionsScreen" class="screen hidden">
+            <div class="instructions">
+                <h2>📋 Cómo Jugar</h2>
+                <div class="instructions-grid">
+                    <div class="instruction-category">
+                        <h3>🎮 Controles PC</h3>
+                        <ul>
+                            <li><strong>Movimiento:</strong> WASD o flechas del teclado</li>
+                            <li><strong>Correr:</strong> Mantén presionada Shift</li>
+                            <li><strong>Disparar:</strong> Click izquierdo del mouse</li>
+                            <li><strong>Apuntar:</strong> Click derecho del mouse</li>
+                            <li><strong>Recoger:</strong> Tecla E cerca de objetos</li>
+                            <li><strong>Inventario:</strong> Tecla TAB</li>
+                        </ul>
+                    </div>
+                    <div class="instruction-category">
+                        <h3>📱 Controles Móvil</h3>
+                        <ul>
+                            <li><strong>Movimiento:</strong> Joystick virtual izquierdo</li>
+                            <li><strong>Cámara:</strong> Deslizar en pantalla</li>
+                            <li><strong>Disparar:</strong> Botón 🔫</li>
+                            <li><strong>Recoger:</strong> Botón 📦</li>
+                            <li><strong>Correr:</strong> Botón 🏃</li>
+                        </ul>
+                    </div>
+                    <div class="instruction-category">
+                        <h3>🎯 Objetivo</h3>
+                        <ul>
+                            <li><strong>Supervivencia:</strong> Sé el último en pie</li>
+                            <li><strong>Zona Segura:</strong> Evita la tormenta andina</li>
+                            <li><strong>Recursos:</strong> Recolecta armas y objetos</li>
+                            <li><strong>Combate:</strong> Elimina a otros jugadores</li>
+                        </ul>
+                    </div>
+                </div>
+                <button id="backBtn" class="btn-secondary">Volver</button>
+            </div>
+        </div>
+
+        <!-- Pantalla del juego mejorada -->
+        <div id="gameScreen" class="screen hidden">
+            <!-- HUD mejorado del juego -->
+            <div id="gameHUD">
+                <div class="hud-top">
+                    <div class="health-bar hud-element">
+                        <span>❤️ Salud:</span>
+                        <div class="bar">
+                            <div id="healthBar" class="bar-fill"></div>
+                        </div>
+                        <span id="healthText">100</span>
+                    </div>
+                    
+                    <div class="players-alive hud-element">
+                        <span>👥 Vivos: <span id="playersAlive">30</span></span>
+                    </div>
+                </div>
+
+                <!-- Minimapa -->
+                <div class="minimap hud-element">
+                    <canvas id="minimapCanvas" width="146" height="146"></canvas>
+                    <div style="position: absolute; bottom: 5px; left: 5px; font-size: 0.7rem; opacity: 0.8;">
+                        MAPA
+                    </div>
+                </div>
+                
+                <div class="hud-bottom">
+                    <div class="inventory hud-element">
+                        <div class="weapon-slot">
+                            <span>🔫 Arma:</span>
+                            <span id="currentWeapon">Ninguna</span>
+                        </div>
+                        <div class="items">
+                            <span>🎒 Objetos:</span>
+                            <span id="inventoryItems">Vacío</span>
+                        </div>
+                    </div>
+                    
+                    <div class="ammo-counter hud-element">
+                        <div id="ammoCount">∞</div>
+                        <div style="font-size: 0.7rem; opacity: 0.8;">MUNICIÓN</div>
+                    </div>
+                </div>
+
+                <!-- Indicadores de estado -->
+                <div id="killFeed" class="kill-feed"></div>
+                
+                <div class="zone-warning hidden" id="zoneWarning">
+                    ⚠️ ¡TORMENTA ANDINA!<br>
+                    <small>Dirígete a la zona segura</small>
+                </div>
+
+                <!-- Timer de partida -->
+                <div class="match-timer">
+                    <span id="matchTime">00:00</span>
+                </div>
+            </div>
+
+            <!-- Canvas del juego -->
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+            <!-- Efectos de partículas -->
+            <div id="particleContainer"></div>
+
+            <!-- Controles móviles mejorados -->
+            <div class="mobile-controls">
+                <div class="joystick-container">
+                    <div id="joystick" class="joystick">
+                        <div class="joystick-knob"></div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button id="shootBtn" class="action-btn">🔫</button>
+                    <button id="aimBtn" class="action-btn">🎯</button>
+                    <button id="pickupBtn" class="action-btn">📦</button>
+                    <button id="runBtn" class="action-btn">🏃</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla de fin de juego mejorada -->
+        <div id="gameOverScreen" class="screen hidden">
+            <div class="game-over">
+                <h2 id="gameOverTitle">¡JUEGO TERMINADO!</h2>
+                <p id="gameOverMessage">Has sido eliminado</p>
+                
+                <div class="stats">
+                    <div class="stat-row">
+                        <span>🏆 Posición Final:</span>
+                        <span id="finalPosition">#15</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>⏱️ Tiempo Sobrevivido:</span>
+                        <span id="survivalTime">3:45</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>💀 Eliminaciones:</span>
+                        <span id="killCount">2</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>📊 Daño Infligido:</span>
+                        <span id="damageDealt">450</span>
+                    </div>
+                </div>
+                
+                <div class="rewards">
+                    <h3>🎁 Recompensas</h3>
+                    <div class="reward-item">
+                        <span>💰 Monedas:</span>
+                        <span id="coinsEarned">+125</span>
+                    </div>
+                    <div class="reward-item">
+                        <span>⭐ Experiencia:</span>
+                        <span id="xpEarned">+89</span>
+                    </div>
+                </div>
+                
+                <div class="game-over-buttons">
+                    <button id="playAgainBtn" class="btn-primary glow-effect">
+                        🔄 JUGAR DE NUEVO
+                    </button>
+                    <button id="mainMenuBtn" class="btn-secondary">
+                        🏠 MENÚ PRINCIPAL
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio elements -->
+    <audio id="backgroundMusic" loop>
+        <source src="audio/background.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="shootSound">
+        <source src="audio/shoot.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="pickupSound">
+        <source src="audio/pickup.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="game_mejorado.js"></script>
+</body>
+</html>
+
